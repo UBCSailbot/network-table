@@ -124,7 +124,6 @@ pipeline {
                             sh 'JENKINS_NODE_COOKIE=nokill nohup ./build/bin/network_table_server > network_table_server.log &'
                             sh 'JENKINS_NODE_COOKIE=nokill nohup ./build/bin/bbb_eth_listener 192.168.1.60 5555 > bbb_eth_listener.log &'
                             sh 'JENKINS_NODE_COOKIE=nokill nohup ./build/bin/bbb_canbus_listener vcan0 > bbb_canbus_listener.log &'
-                            sh 'JENKINS_NODE_COOKIE=nokill nohup ./build/bin/bbb_satellite_listener 2 2 2 /tmp/serialport1 > bbb_satellite_listener.log &'
                             sh 'JENKINS_NODE_COOKIE=nokill nohup ./projects/virtual_iridium/python/Iridium9602.py --webhook_server_endpoint 10.0.0.1:8000 --http_server_port 8085 -d /tmp/serialport2 -m HTTP_POST > virtual_iridium.log &'
 
                             // Run this here so that we have gps coordinates in the network table and global pathfinding will work properly
@@ -184,6 +183,18 @@ pipeline {
                     }
                 }
 
+                stage('Run BBB Satellite Listener') {
+                    agent {
+                        label 'bbb'
+                    }
+                    steps {
+                        dir("/home/debian/workspace/can_bbb_nuc_integration/") {
+                            sh 'JENKINS_NODE_COOKIE=nokill nohup ./build/bin/bbb_satellite_listener 2 2 2 /tmp/serialport1 > bbb_satellite_listener.log &'
+                        }
+                    }
+                }
+
+
                 stage ('Run BBB tests') {
                     agent {
                         label 'bbb'
@@ -191,6 +202,7 @@ pipeline {
                     steps {
                         dir("/home/debian/workspace/can_bbb_nuc_integration/") {
                             sh './scripts/canbus_data_checker.py -c vcan0'
+							sh './build/bin/viewtree'
                         }
                     }
                 }

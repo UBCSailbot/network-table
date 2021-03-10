@@ -16,12 +16,14 @@ set(NT_CLIENT_SRCS
         Connection.cpp
         Help.cpp
         NonProtoConnection.cpp
+        Logger.cpp
         )
 
 set(NT_CLIENT_HDRS
         Connection.h
         Help.h
         NonProtoConnection.h
+        Logger.h
         )
 
 # just manually go into the protofiles subrepo

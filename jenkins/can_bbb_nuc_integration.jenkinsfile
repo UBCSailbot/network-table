@@ -163,6 +163,7 @@ pipeline {
                                 source /opt/ros/melodic/setup.bash
                                 source /home/raye/catkin_ws/devel/setup.sh
                                 JENKINS_NODE_COOKIE=nokill nohup /opt/ros/melodic/bin/rosrun local_pathfinding main_loop.py &
+								rostopic echo /GPS > local_pathfinding.log &
                             '''
                         }
                     }

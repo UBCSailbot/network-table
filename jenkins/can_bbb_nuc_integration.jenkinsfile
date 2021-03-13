@@ -224,6 +224,8 @@ pipeline {
                         dir('/home/raye/workspace/can_bbb_nuc_integration') {
                             echo "======== NUC nuc_eth_listener ========"
                             sh 'cat nuc_eth_listener.log'
+                            echo "======== NUC local_pathfinding ========"
+                            sh 'cat local_pathfinding.log'
                         }
                     }
                 }
